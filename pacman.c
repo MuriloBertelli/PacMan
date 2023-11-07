@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include "pacman.h"
 
-char **mapa;
-int linhas;
-int colunas;
+struct mapa m;
 
 void lemapa()
 {
@@ -16,12 +14,12 @@ void lemapa()
 		exit(1);
 	}
 
-	fscanf(f, "%d %d", &linhas, &colunas);
+	fscanf(f, "%d %d", &(m.linhas), &(m.colunas));
 	alocamapa();
 
 	for (int i = 0; i < 5; i++)
 	{
-		fscanf(f, "%s", mapa[i]);
+		fscanf(f, "%s", m.matriz[i]);
 	}
 
 	fclose(f);
@@ -29,22 +27,22 @@ void lemapa()
 
 void alocamapa()
 {
-	mapa = malloc(sizeof(char *) * linhas);
+	m.matriz = malloc(sizeof(char *) * m.linhas);
 
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < m.linhas; i++)
 	{
-		mapa[i] = malloc(sizeof(char) * colunas + 1);
+		m.matriz[i] = malloc(sizeof(char) * m.colunas + 1);
 	}
 }
 
 void liberamapa()
 {
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < m.linhas; i++)
 	{
-		free(mapa[i]);
+		free(m.matriz[i]);
 	}
 
-	free(mapa);
+	free(m.matriz);
 }
 
 int acabou()
@@ -57,11 +55,11 @@ void move(char direcao)
 	int x;
 	int y;
 
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < m.linhas; i++)
 	{
-		for (int j = 0; j < colunas; j++)
+		for (int j = 0; j < m.colunas; j++)
 		{
-			if (mapa[i][j] == '@')
+			if (m.matriz[i][j] == '@')
 			{
 				x = i;
 				y = j;
@@ -73,27 +71,27 @@ void move(char direcao)
 	switch (direcao)
 	{
 	case 'a':
-		mapa[x][y - 1] = '@';
+		m.matriz[x][y - 1] = '@';
 		break;
 	case 'w':
-		mapa[x - 1][y] = '@';
+		m.matriz[x - 1][y] = '@';
 		break;
 	case 's':
-		mapa[x + 1][y] = '@';
+		m.matriz[x + 1][y] = '@';
 		break;
 	case 'd':
-		mapa[x][y + 1] = '@';
+		m.matriz[x][y + 1] = '@';
 		break;
 	}
 
-	mapa[x][y] = '.';
+	m.matriz[x][y] = '.';
 }
 
 void imprimemapa()
 {
-	for (int i = 0; i < linhas; i++)
+	for (int i = 0; i < m.linhas; i++)
 	{
-		printf("%s\n", mapa[i]);
+		printf("%s\n", m.matriz[i]);
 	}
 }
 
