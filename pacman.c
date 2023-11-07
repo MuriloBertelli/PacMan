@@ -47,14 +47,6 @@ void liberamapa()
 	free(mapa);
 }
 
-void imprimemapa()
-{
-	for (int i = 0; i < linhas; i++)
-	{
-		printf("%s\n", mapa[i]);
-	}
-}
-
 int acabou()
 {
 	return 0;
@@ -65,10 +57,9 @@ void move(char direcao)
 	int x;
 	int y;
 
-	// acha a posiçao do foge foge.
-	for (int i = 0; i < colunas; i++)
+	for (int i = 0; i < linhas; i++)
 	{
-		for (int j = 0; j < linhas; j++)
+		for (int j = 0; j < colunas; j++)
 		{
 			if (mapa[i][j] == '@')
 			{
@@ -93,9 +84,17 @@ void move(char direcao)
 	case 'd':
 		mapa[x][y + 1] = '@';
 		break;
-		// dois pacman no mapa
 	}
+
 	mapa[x][y] = '.';
+}
+
+void imprimemapa()
+{
+	for (int i = 0; i < linhas; i++)
+	{
+		printf("%s\n", mapa[i]);
+	}
 }
 
 int main()
@@ -105,13 +104,14 @@ int main()
 
 	do
 	{
+		imprimemapa();
+
 		char comando;
 		scanf(" %c", &comando);
+
 		move(comando);
 
 	} while (!acabou());
-
-	imprimemapa();
 
 	liberamapa();
 }
